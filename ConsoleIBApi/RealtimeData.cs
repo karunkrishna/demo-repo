@@ -26,7 +26,7 @@ namespace ConsoleIBApi
 
             List<TagValue> mktDataOptions = new List<TagValue>();
 
-            Console.WriteLine("QuoteRequest for " + contract.Symbol);
+            Console.WriteLine("QuoteRequest for made" + contract.Symbol);
 
             ibClient.ClientSocket.reqMktData(1, contract, "", false, mktDataOptions);
             Console.ReadKey(); // Key main thread active so that the reqMktData tread can remain open. 
