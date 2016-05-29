@@ -15,7 +15,7 @@ namespace ConsoleTestApp
             CommitmentOfTraders csv = new CommitmentOfTraders();
             StateStreet csvStateStreet = new StateStreet();
             ForexFactory csvForexFactory = new ForexFactory();
-            CheckURLIsValid checkUrl = new CheckURLIsValid();
+            YahooFinance checkUrl = new YahooFinance();
 
 
 

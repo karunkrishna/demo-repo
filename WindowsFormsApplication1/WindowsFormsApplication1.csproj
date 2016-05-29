@@ -61,7 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FetchFromForexFactory" />
-    <Compile Include="ForexFactoryCalendar.cs" />
+    <None Include="ForexFactoryCalendar" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
