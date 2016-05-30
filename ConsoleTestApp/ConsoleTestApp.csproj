@@ -78,6 +78,7 @@
     <Compile Include="DataCollection\StateStreet.cs" />
     <Compile Include="DataCollection\CommitmentOfTraders.cs" />
     <Compile Include="DataCollection\ForexFactory.cs" />
+    <Compile Include="DataCollection\Zacks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

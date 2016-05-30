@@ -31,7 +31,7 @@ namespace ConsoleTestApp
             //
 
             //Download Equitities data
-            checkUrl.RunURLChecker();
+            //checkUrl.RunURLChecker();
 
 
             Console.ReadLine();
