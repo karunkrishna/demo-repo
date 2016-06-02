@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace ConsolePatternRecognizer
+{
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ThreadedTickData tick = new ThreadedTickData();
+            TickDetails TickUpdate = tick.PublishTickData();
+            
+            Console.WriteLine(TickUpdate);
+
+            //Task<TickData> t = Task.Run(tick.PublishTickData); 
+            //Thread publishTickData = new Thread(tick.PublishTickData);
+            //publishTickData.Start();
+
+            Console.ReadKey();
+
+
+        }
+    }
+}

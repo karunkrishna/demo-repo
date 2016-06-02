@@ -43,9 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataCollection\SampleCompleted.cs" />
+    <Compile Include="DataCollection\ThreadedTickData.cs" />
     <Compile Include="DataCollection\TickData.cs" />
+    <None Include="Program.cs.20160601.Tread" />
     <Compile Include="Program.cs" />
+    <None Include="Program.cs.20160601.Event" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SamplePattern.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

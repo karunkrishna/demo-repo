@@ -1,40 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Threading;
 
 namespace ConsolePatternRecognizer
 {
-
-    public class TickEventArgs : EventArgs
+    class ThreadedTickData
     {
-        public DateTime Timestamp { get; set; }
-        public double Open { get; set; }
-        public double High { get; set; }
-        public double Low { get; set; }
-        public double Close { get; set; }
-        public int Volume { get; set; }
-         
-    }
-    public class TickData
-    {
-        private TickEventArgs tickData;
+        List<string> realtimeBar = new List<string>();
+        private int timeCoefficient = 300;
 
-        //public delegate void TickDataEventHandler(object source, TickEventArgs args);
-        //public event TickDataEventHandler TickUpdated;
-        public EventHandler<TickEventArgs> TickUpdated; 
-
-        private List<string> realtimeBar = new List<string>();
-        private int timeCoefficient = 1000;
-
-        public TickData()
+        public void InitalizeTickData()
         {
-            
             realtimeBar.Add("2016-05-27 9:30:01 AM,2089.75,2090,2089.25,2089.5,1679");
             realtimeBar.Add("2016-05-27 9:30:12 AM,2089.5,2089.75,2089.25,2089.5,1545");
             realtimeBar.Add("2016-05-27 9:30:32 AM,2089.5,2089.75,2089.25,2089.75,1231");
@@ -554,17 +534,15 @@ namespace ConsolePatternRecognizer
             realtimeBar.Add("2016-05-27 3:59:59 PM,2096.25,2096.5,2096,2096.25,3570");
             realtimeBar.Add("2016-05-27 3:59:59 PM,2096.25,2096.75,2096.25,2096.75,4263");
             realtimeBar.Add("2016-05-27 3:59:59 PM,2096.75,2096.75,2096.5,2096.75,1722");
+        }   // Initialize the TickData
 
-
-        }   //Initialize the tick data to be used
-
-        public void PublishTickData()
+        public TickDetails PublishTickData()
         {
-            Console.WriteLine("Staring tick data program to publish data");
+            Console.WriteLine("Publish tick data via worker thread");
             Stopwatch tickDuration = new Stopwatch();
             tickDuration.Start();
 
-            DateTime previousTime = DateTime.Now; //Declare init value will be updated in code later
+            DateTime previousTime = DateTime.Now;   // dumby variable
 
             for (int i = 0; i < realtimeBar.Count; i++)
             {
@@ -573,49 +551,49 @@ namespace ConsolePatternRecognizer
                 if (i == 0)
                 {
                     previousTime = DateTime.Parse(element[0]);
-                    //Console.WriteLine(realtimeBar[i].ToString());
-                    
-                    OnTickUpdated(TickDetials(element[0],element[1],element[2],element[3],element[4],element[5]));        //Publish the event
                 }
                 else
                 {
                     TimeSpan timeDiff = DateTime.Parse(element[0]) - previousTime;
-                    int publishPeriod = Convert.ToInt32((timeDiff.TotalMilliseconds)/timeCoefficient);
+                    int publishPeriod = Convert.ToInt32((timeDiff.TotalMilliseconds) / timeCoefficient);
 
-                    Thread.Sleep(publishPeriod);
+                    Thread.Sleep(publishPeriod);    //Simulate realtime tick update using a factor for faster completion
                     previousTime = DateTime.Parse(element[0]);
-
-                    //Console.WriteLine(realtimeBar[i].ToString());    //Used to check the publish event
-                    OnTickUpdated(TickDetials(element[0], element[1], element[2], element[3], element[4], element[5]));    //Publish the event
                 }
+                return (TickObject(element[0], element[1], element[2], element[3], element[4], element[5]));    //Publish the event
+
             }
+
             tickDuration.Stop();
-            Console.WriteLine("Time Elapsed" + tickDuration.Elapsed);
+            Console.WriteLine("Elapsed time publishing data " + tickDuration.Elapsed);
 
-        }   //Publish tick data
+            return null;
 
-        public TickEventArgs TickDetials(string date, string open, string high, string low, string close, string volume)
+        }
+
+        private TickDetails TickObject(string timestamp, string  open, string high, string low, string close, string volume)
         {
-            tickData = new TickEventArgs()
+            TickDetails UpdatedTick = new TickDetails()
             {
-                Timestamp = DateTime.Parse(date),
+                Timestamp = DateTime.Parse(timestamp),
                 Open = Double.Parse(open),
                 High = Double.Parse(high),
                 Low = Double.Parse(low),
                 Close = Double.Parse(close),
-                Volume = Convert.ToInt32(volume)
+                Volume = Int32.Parse(volume)
             };
 
-            return tickData;
-        }
-       protected virtual void OnTickUpdated(TickEventArgs tickDetails)
-        {
-            if (TickUpdated !=null)
-                TickUpdated(this, tickDetails);
-
+            return UpdatedTick;
         }
     }
 
-
+    public class TickDetails
+    {
+        public DateTime Timestamp { get; set; }
+        public double Open { get; set; }
+        public double High { get; set; }
+        public double Low { get; set; }
+        public double  Close { get; set; }
+        public int Volume { get; set; }
+    }
 }
-
