@@ -35,9 +35,9 @@ namespace ConsolePatternRecognizer
         {
            Console.WriteLine(args.Close);
 
-           tickList.Add(args.Close);
+            tickQueue.Enqueue(args.Close);
 
-            if (tickList.Count == 10)
+            if (tickQueue.Count >= 10)
             {
                 Console.WriteLine("We hit sample size");
 

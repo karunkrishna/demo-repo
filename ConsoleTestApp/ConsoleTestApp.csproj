@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\EconomicEventHeatmap.cs" />
     <Compile Include="DataCollection\YahooFinance.cs" />
     <Compile Include="DataCollection\StateStreet.cs" />
     <Compile Include="DataCollection\CommitmentOfTraders.cs" />

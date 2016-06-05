@@ -353,7 +353,8 @@ namespace ConsoleIBApi
 
             #endregion
 
-
+            QueueBadExample testBadQueue = new QueueBadExample();
+            
 
             Console.ReadKey();
         }
