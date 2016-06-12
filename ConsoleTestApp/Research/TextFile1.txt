@@ -1,0 +1,25 @@
+﻿Volatility study
+
+I would like model the activity that increase the volatilty of the market. 
+
+1. Earnings Release
+2. Witching
+3. Economic Data Release
+4. Options
+
+
+
+
+
+WITCHING 
+Triple witching occurs when the contracts for stock index futures, stock index options and stock options expire on the same day. Triple witching days happen four times a year on the third Friday of March, June, September and December. Triple witching days, particularly the final hour of trading preceding the closing bell, can result in escalated trading activity and volatility as traders close, roll out or offset their expiring positions.
+While much of the trading in closing, opening and offsetting futures and options contracts during triple witching days is related to the squaring of positions, the surge of activity can also drive price inefficiencies, which draws short-term arbitrageurs.
+The witching hour occurs on the last hour of trading on the third Friday of each month as options and futures on stocks and stock indices expire. This period is often characterized by heavy volume as traders close out options and futures contracts for the purpose of opening new positions in forward months.
+The primary reason for escalated activity on witching hour days is contracts that are not closed out may result in the purchase or sale of the underlying security. For example, futures contracts that are not closed out require the seller to deliver the specified quantity of the underlying security or commodity to the buyer of the contract. Options that are in the money may result in the underlying shares being assigned for purchase to the owner of that contract. In both cases, if the leveraged contract owner is not in a position to pay the full value of the security to be delivered, the contract has to be closed out prior to expiration.
+
+http://www.cmegroup.com/trading/equity-index/us-index/e-mini-sandp500_quotes_volume_voi.html?optid=133#tradeDate=20160609
+
+Option dates
+
+http://www.cmegroup.com/trading/equity-index/us-index/e-mini-sandp500_product_calendar_futures.html
+http://www.cmegroup.com/trading/equity-index/us-index/e-mini-sandp500_product_calendar_options.html

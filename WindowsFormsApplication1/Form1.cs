@@ -228,10 +228,10 @@ namespace WindowsFormsApplication1
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SecotorHoldingDownloader sectorData = new SecotorHoldingDownloader();
+            //SecotorHoldingDownloader sectorData = new SecotorHoldingDownloader();
             //yahooDownload.DownloadYahooHistoricalData();
             //sectorData.DownloadStateStreetHoldings();
-            sectorData.RecordHoldingsData();
+           // sectorData.RecordHoldingsData();
         }
 
         private void button3_Click(object sender, EventArgs e)

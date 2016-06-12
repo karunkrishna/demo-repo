@@ -24,6 +24,7 @@ namespace ConsoleIBApi
         static void Main(string[] args)
         {
 
+
             #region TWSAPI Testing
             /*
             Console.WriteLine(" Press any key to call Realtime data code");
@@ -353,8 +354,8 @@ namespace ConsoleIBApi
 
             #endregion
 
-            QueueBadExample testBadQueue = new QueueBadExample();
-            
+            //QueueBadExample testBadQueue = new QueueBadExample();
+
 
             Console.ReadKey();
         }

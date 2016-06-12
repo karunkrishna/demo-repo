@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis\EconomicEventHeatmap.cs" />
+    <Compile Include="DataCollection\CMEGroup.cs" />
     <Compile Include="DataCollection\YahooFinance.cs" />
     <Compile Include="DataCollection\StateStreet.cs" />
     <Compile Include="DataCollection\CommitmentOfTraders.cs" />
@@ -127,6 +128,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Research\TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -17,8 +17,11 @@ namespace ConsoleTestApp
             //ForexFactory csvForexFactory = new ForexFactory();
             //YahooFinance checkUrl = new YahooFinance();
             //EconomicEventHeatmap getHeatmap = new EconomicEventHeatmap();
-            Zacks date = new Zacks();
 
+            //Zacks date = new Zacks();
+            CMEGroup settlement = new CMEGroup();
+           // YahooFinance vix = new YahooFinance();
+           // vix.SaveSingleData("^VIX");
 
 
             //Load historical data

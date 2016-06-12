@@ -37,9 +37,7 @@ namespace ConsoleTestApp.DataCollection
             TimeSpan timespan = timer.Elapsed;
             Console.WriteLine(timespan);
             Console.ReadKey();
-
         }
-
         private void ValidateTickerURL(string symbol)
         {
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
@@ -134,5 +132,44 @@ namespace ConsoleTestApp.DataCollection
 
             }
         }   // TO DO: I need to include sanity checks so that I don't save duplicat data for symbol and date.
+        public void SaveSingleData(string filename)
+        {
+                    dbConn.Open();
+                    MySqlCommand createTable = new MySqlCommand("CREATE TABLE IF NOT EXISTS yahooDailyData (symbol varchar(20), datenum varchar(30), open varchar(20), high varchar(20), low varchar(20), close varchar(20), volume varchar(25), adjClose varchar(20));", dbConn);
+                    createTable.ExecuteNonQuery();
+
+                    string[] fileNames = Directory.GetFiles(csvDownloadDir, filename+".csv");
+                    {
+
+                        var sr = new StreamReader(fileNames[0]);
+
+                        while (!sr.EndOfStream)
+                        {
+                            var line = sr.ReadLine();
+                            var column = line.Split(',');
+
+                            if (!column[0].Contains("Date"))
+                            {
+                                MySqlCommand cmd = new MySqlCommand();
+                                cmd.Connection = dbConn;
+                                cmd.CommandText = "Insert into yahooDailyData values (@symbol, @datenum, @open,@high,@low,@close,@volume,@adjClose)";
+                                cmd.Parameters.Add(new MySqlParameter("@symbol", filename));
+                                cmd.Parameters.Add(new MySqlParameter("@datenum", column[0].ToString()));
+                                cmd.Parameters.Add(new MySqlParameter("@open", column[1].ToString()));
+                                cmd.Parameters.Add(new MySqlParameter("@high", column[2].ToString()));
+                                cmd.Parameters.Add(new MySqlParameter("@low", column[3].ToString()));
+                                cmd.Parameters.Add(new MySqlParameter("@close", column[4].ToString()));
+                                cmd.Parameters.Add(new MySqlParameter("@volume", column[5].ToString()));
+                                cmd.Parameters.Add(new MySqlParameter("@adjClose", column[6].ToString()));
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                    }
+
+                dbConn.Close();
+
+            
+        }   // Alot of this is duplicate code. There is probably a cleaner way to do this. 
     }
 }

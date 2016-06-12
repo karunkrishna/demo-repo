@@ -18,8 +18,8 @@ namespace ConsoleTestApp
 {
     class Zacks
     {
-        private int lookbackDays = 18;
-        private DateTime date = new DateTime(2016, 05, 31);
+        private int lookbackDays = 148;
+        private DateTime date = new DateTime(2016, 08, 06);
 
         private List<DateTime> fetchDates = new List<DateTime>();
         Dictionary<DateTime, List<string[]>> zackEarningsStat = new Dictionary<DateTime, List<string[]>>();
@@ -31,7 +31,7 @@ namespace ConsoleTestApp
             timer.Start();
 
             for (int i = 0; i < lookbackDays; i++)
-                fetchDates.Add(date.AddDays(-1 * i));
+                fetchDates.Add(date.AddDays(+1 * i));
 
             foreach (var d in fetchDates)
             {

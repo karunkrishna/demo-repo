@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountManager\AccountManager.cs" />
     <Compile Include="EventAndDelegatesEx\Video.cs" />
     <Compile Include="EventAndDelegatesEx\VideoEncoder.cs" />
     <Compile Include="EWrapperImpl.cs" />
