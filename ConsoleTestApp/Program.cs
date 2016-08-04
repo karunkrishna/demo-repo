@@ -12,17 +12,31 @@ namespace ConsoleTestApp
     {
         static void Main(string[] args)
         {
+
+            //ForexFactory csvForexFactory = new ForexFactory();
+            //csvForexFactory.FetchHTTPData();
+
+
             //CommitmentOfTraders csv = new CommitmentOfTraders();
             //StateStreet csvStateStreet = new StateStreet();
-            //ForexFactory csvForexFactory = new ForexFactory();
+            LocalForexFactory csvLocalForexFactory = new LocalForexFactory();
+            csvLocalForexFactory.FetchLocalHTTPData();
+
+
+
             //YahooFinance checkUrl = new YahooFinance();
             //EconomicEventHeatmap getHeatmap = new EconomicEventHeatmap();
 
-            //Zacks date = new Zacks();
-            CMEGroup settlement = new CMEGroup();
-           // YahooFinance vix = new YahooFinance();
-           // vix.SaveSingleData("^VIX");
+            //EMailAlert sendEmail = new EMailAlert();
 
+            //Morningstar getFinacials = new Morningstar();
+
+            //Zacks date = new Zacks();
+            //CMEGroup settlement = new CMEGroup();
+            // YahooFinance vix = new YahooFinance();
+            // vix.SaveSingleData("^VIX");
+
+            // KeyAlerts getData = new KeyAlerts();
 
             //Load historical data
             //csv.CsvFetchCommitmentofTraders();
@@ -37,6 +51,7 @@ namespace ConsoleTestApp
 
             //Download Equitities data
             //checkUrl.RunURLChecker();
+
 
 
             Console.ReadLine();

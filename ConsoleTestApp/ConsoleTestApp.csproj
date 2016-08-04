@@ -74,8 +74,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\PnlByTime.cs" />
     <Compile Include="Analysis\EconomicEventHeatmap.cs" />
     <Compile Include="DataCollection\CMEGroup.cs" />
+    <Compile Include="DataCollection\Finviz.cs" />
+    <Compile Include="DataCollection\LocalForexFactory.cs" />
+    <Compile Include="DataCollection\RefreshForexFactory.cs" />
+    <Compile Include="DataCollection\Morningstar.cs" />
+    <Compile Include="DataCollection\StockCharts.cs" />
     <Compile Include="DataCollection\YahooFinance.cs" />
     <Compile Include="DataCollection\StateStreet.cs" />
     <Compile Include="DataCollection\CommitmentOfTraders.cs" />
@@ -83,6 +89,8 @@
     <Compile Include="DataCollection\Zacks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\EMailAlert.cs" />
+    <Compile Include="Reports\KeyAlerts.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

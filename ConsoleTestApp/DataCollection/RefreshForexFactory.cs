@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,49 +10,22 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleTestApp.DataCollection
 {
-    class ForexFactory
+    class RefreshForexFactory
     {
         private MySqlConnection dbConn = new MySqlConnection("server = localhost; database=algo;uid=root;password=Password1;");
         private List<string> checkEventId = new List<string>();
-        private DateTime checkLastUpdatedTime = new DateTime();
         public void FetchHTTPData()
         {
-            string[] monthRange = { "jan","feb" ,"mar","apr","may","jun","jul","aug","sep","oct","nov","dec"};
-            int[] yearRange = { 2015,2016};
-            checkLastUpdatedTime = this.GetLastUpdatedTime();
-
-            foreach (int year in yearRange)
-            {
-                if (year >= checkLastUpdatedTime.Year)
-                {
-
-
-                    foreach (string month in monthRange)
-                    {
-                        if (DateTime.ParseExact(month, "MMM", CultureInfo.CurrentCulture).Month >= checkLastUpdatedTime.Month
-                            && DateTime.ParseExact(month, "MMM", CultureInfo.CurrentCulture).Month <= DateTime.Now.AddMonths(1).Month)
-                        {
-                            
-                            string url = "http://www.forexfactory.com/calendar.php?month=" + month + "." + year;
-                            Console.WriteLine("ForexFactory.cs - Fetching data from URL: " + url);
-                            
-                            this.ParseHTTPData(url);
-                            Console.WriteLine("ForexFactory.cs - Parsed data from Forex Factory....");
-                            
-                        }
-                    }
-                }
-            }
+            //TO DO: Get the eventid for forefactory items currently stored in the database
+            //Get timestampe to generate HTTP request. 
+            //Monitor for refresh tag, if refresh tag is gone...and data is present. Get Data, save to database and display toolbox
             
             Console.WriteLine("ForexFactory.cs - Saved data to database...");
-            CleanUpData();
-            Console.WriteLine("ForexFactory.cs - Data set has been cleaned...");
 
         }
         private void ParseHTTPData(string url)
         {
             checkEventId = this.CheckRecordedEventId();
-
             string lastDate = "";
             string lastTime = "";
 
@@ -143,34 +115,6 @@ namespace ConsoleTestApp.DataCollection
             return data;
         }
 
-        private DateTime GetLastUpdatedTime()
-        {
-            DateTime lastUpdatedTime = new DateTime();
-            string query = "select lastUpdatedTime from economiceventdata order by lastUpdatedTime desc limit 1";
-            dbConn.Open();
-            using (MySqlCommand command = new MySqlCommand(query, dbConn))
-            {
-                using (MySqlDataReader reader = command.ExecuteReader())
-                {
-
-                    while (reader.Read())
-                    {
-                        lastUpdatedTime = reader.GetDateTime(0);
-                    }
-                }
-            }
-
-            string queryDeleteBlankRecords = string.Format("delete from economiceventdata where datenum >= '{0}'",lastUpdatedTime.ToShortDateString());
-
-            using (MySqlCommand command = new MySqlCommand(queryDeleteBlankRecords, dbConn))
-            {
-                command.ExecuteNonQuery();
-            }
-            Console.WriteLine("ForexFactory.cs - delete any record post " + lastUpdatedTime.ToShortDateString());
-            dbConn.Close();
-            return lastUpdatedTime;
-        }
-
         private void SaveDataToDatabase(string eventId, string dateNum, string timeEst, string currency, string impact, string eventName, string actual, string forecast, string previous)
         {
             MySqlCommand cmd = new MySqlCommand();
@@ -179,7 +123,7 @@ namespace ConsoleTestApp.DataCollection
 
                 if (!checkEventId.Contains(eventId))
                     {
-                        cmd.CommandText = "Insert into economicEventData values (@eventId, @dateNum,@timeEst,@currency,@impact,@event,@actual,@forecast,@previous,@lastUpdatedTime)";
+                        cmd.CommandText = "Insert into economicEventData values (@eventId, @dateNum,@timeEst,@currency,@impact,@event,@actual,@forecast,@previous)";
                         cmd.Parameters.Add(new MySqlParameter("@eventId", eventId));
                         cmd.Parameters.Add(new MySqlParameter("@dateNum", dateNum));
                         cmd.Parameters.Add(new MySqlParameter("@timeEst", timeEst));
@@ -189,39 +133,10 @@ namespace ConsoleTestApp.DataCollection
                         cmd.Parameters.Add(new MySqlParameter("@actual", actual));
                         cmd.Parameters.Add(new MySqlParameter("@forecast", forecast));
                         cmd.Parameters.Add(new MySqlParameter("@previous", previous));
-                        cmd.Parameters.Add((new MySqlParameter("@lastUpdatedTime", DateTime.Now.Date.ToShortDateString())));
                     cmd.ExecuteNonQuery();
                     }
 
             dbConn.Close();
         }
-        private void CleanUpData()
-        {
-            string[] query =
-            {
-                "update economiceventdata set timeEst = substring_index(timeEst,'&nbsp;',-1) where timeEst like '&nbsp;%'",
-                "update economiceventdata set actual = concat('<',(substring_index(actual,'&lt;',-1))) where actual like '&lt;%'",
-                "update economiceventdata set previous = concat('<',(substring_index(previous,'&lt;',-1))) where previous like '&lt;%'",
-                "update economiceventdata set forecast = concat('<',(substring_index(forecast,'&lt;',-1))) where forecast like '&lt;%'",
-                "update economiceventdata set actual = concat('>',(substring_index(actual,'&gt;',-1))) where actual like '&gt;%'",
-                "update economiceventdata set previous = concat('>',(substring_index(previous,'&gt;',-1))) where previous like '&gt;%'",
-                "update economiceventdata set forecast = concat('>',(substring_index(forecast,'&gt;',-1))) where forecast like '&gt;%'"
-            };
-            
-
-            dbConn.Open();
-            foreach (string q in query)
-            {
-                using (MySqlCommand cmd = new MySqlCommand(q, dbConn))
-                {
-                    cmd.ExecuteNonQuery();
-                }
-            }
-
-            dbConn.Close();
-
-
-        }
     }
-
 }
