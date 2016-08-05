@@ -81,6 +81,7 @@
     <Compile Include="DataCollection\LocalForexFactory.cs" />
     <Compile Include="DataCollection\RefreshForexFactory.cs" />
     <Compile Include="DataCollection\Morningstar.cs" />
+    <Compile Include="DataCollection\RefreshForexFactoryData.cs" />
     <Compile Include="DataCollection\StockCharts.cs" />
     <Compile Include="DataCollection\YahooFinance.cs" />
     <Compile Include="DataCollection\StateStreet.cs" />
