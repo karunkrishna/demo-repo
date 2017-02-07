@@ -24,9 +24,33 @@ namespace ConsoleTestApp
 
         static void Main(string[] args)
         {
+            //This will download the data from the website. 
+
+            LinearRegression test = new LinearRegression();
+
+            Console.ReadKey();
+
+        }
+
+        public static void GetInfoAndSendData()
+        {
+            try
+            {
+                ForexFactory csvForexFactory = new ForexFactory();
+                csvForexFactory.FetchHTTPData();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Could not download upcoming events. Connection to internet is not available...");
+            }
+
+            //Then I need to run the automatic refresher. 
+
             Dictionary<int, DateTime> currentEventandTime = new Dictionary<int, DateTime>();
             Dictionary<int, string> isIssueCurrentEventandTime = new Dictionary<int, string>();
-            string queryEventId = "select id, concat(concat(datenum,' '),timeEst) from ( select * from economiceventdataRefresh where forecast <> '' or previous <> '') xd where xd.datenum = '2016-06-22'";
+            //string queryEventId = "select id, concat(concat(datenum,' '),timeEst) from ( select * from economiceventdata where forecast <> '' or previous <> '') xd where xd.datenum = '2016-06-22'";
+            string queryEventId = string.Format("select id, concat(concat(datenum,' '),timeEst) from ( select * from economiceventdata where forecast <> '' or previous <> '') xd where xd.datenum = '{0}'", DateTime.Now.ToShortDateString());
 
             dbConn.Open();
             using (MySqlCommand command = new MySqlCommand(queryEventId, dbConn))
@@ -45,26 +69,32 @@ namespace ConsoleTestApp
                         else
                         {
                             //Test out this case please....
-                            isIssueCurrentEventandTime.Add(reader.GetInt32(0),reader.GetString(1));
+                            isIssueCurrentEventandTime.Add(reader.GetInt32(0), reader.GetString(1));
                         }
                     }
                 }
             }
             dbConn.Close();
 
-            //createTimerEvent();
-            DateTime eventTime = new DateTime(2016, 06, 22, 10, 00, 00);
-
-            //http://stackoverflow.com/questions/314008/programatically-using-a-string-as-object-name-when-instantiating-an-object
-
+            Console.WriteLine("List of events to monitor");
+            Console.WriteLine("------------------------------");
             foreach (KeyValuePair<int, DateTime> id in currentEventandTime)
             {
 
                 new RefreshForexFactoryData(id.Key, id.Value);
             }
 
-            //RefreshForexFactoryData eventA = new RefreshForexFactoryData(60816, eventTime);
-            //RefreshForexFactoryData eventB = new RefreshForexFactoryData(62333, eventTime);
+            Console.WriteLine("List of events that are not monitored");
+            Console.WriteLine("------------------------------");
+
+            foreach (KeyValuePair<int, string> id in isIssueCurrentEventandTime)
+            {
+
+                Console.WriteLine(string.Format("[{0}] {1}", id.Key, id.Value));
+            }
+
+            EMailAlert send = new EMailAlert();
+            send.SendEmail();
 
             Console.ReadLine();
         }
@@ -117,36 +147,6 @@ namespace ConsoleTestApp
 
 
         #endregion
-
-        private void createTimerEvent()
-        {
-            // I WILL BE SETTING UP A SCHEDULE TASK BASED OF ELAPSED TIME HERE. 
-            // I HOPE THAT IT DOES NOT GET MESSY. LETS DO IT FOR ONE CASE, AND THEN EXPAND TO MULTIPLE THREADS. 
-
-            //hardcoded data: 
-            Dictionary<int, DateTime> testEventDetails = new Dictionary<int, DateTime>();
-            int testId = 60816;
-            DateTime testDateTime = new DateTime(2016, 06, 22, 10, 00, 00);
-            testEventDetails.Add(testId, testDateTime);
-
-            DateTime currentTime = DateTime.Now;
-            TimeSpan timeToEvent = testDateTime - currentTime;
-            double totalMsToEvent = timeToEvent.TotalMilliseconds;
-
-            //Now I have this elapsed time, I need a way to trigger the event, and actually do the call request to the HTML page. 
-            //Create a unix comand to quickly convert before and after page. 
-
-
-            executeFetchEvent.Interval = totalMsToEvent;
-            executeFetchEvent.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-
-        }
-        private  void OnTimedEvent(object source, ElapsedEventArgs e)
-        {
-            Console.WriteLine("We have went about fetching the data");
-            //this.ParseLocalHttpData(@"C:/Users/Karunyan/Documents/Reports/testLocalHTML/doing.html", 60816);
-            executeFetchEvent.Enabled = false;
-        }
 
     }
 
